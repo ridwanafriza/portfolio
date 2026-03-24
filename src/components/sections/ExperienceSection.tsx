@@ -46,7 +46,7 @@ export default function ExperienceSection() {
               animate={inView ? { opacity: 1, x: 0 } : {}}
               transition={{ delay: 0.2 + i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Dot on timeline */}
+              {/* Dot on timelinee */}
               <div
                 className="absolute left-0 top-1.5 w-4 h-4 rounded-full ml-[1.15rem]"
                 style={{
