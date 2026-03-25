@@ -66,6 +66,9 @@ export default function ExperienceSection() {
                     <h3 className="font-display text-xl font-medium" style={{ color: "var(--fg)" }}>
                       {job.role}
                     </h3>
+                    <p className="text-xs font-mono opacity-70">
+                      {job.type === "it" ? " IT Experience" : " Technical Experience"}
+                    </p>
                     <p className="text-sm font-medium mt-0.5" style={{ color: "var(--accent)" }}>
                       {job.company}
                     </p>

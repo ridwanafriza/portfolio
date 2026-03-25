@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Design tokens ────────────────────────────────────── */
+/* Design tokens */
 :root {
   --bg:          #f8f5ee;
   --bg-alt:      #f0ece0;
@@ -35,7 +35,7 @@
   --shadow:      0 4px 40px rgba(0,0,0,0.30);
 }
 
-/* ── Base ─────────────────────────────────────────────── */
+/* Base */
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
@@ -52,7 +52,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Custom Cursor ────────────────────────────────────── */
+/*  Custom Cursor  */
 .cursor-dot {
   width: 8px;
   height: 8px;
@@ -94,15 +94,15 @@ body {
   html { cursor: auto; }
 }
 
-/* ── Scrollbar ────────────────────────────────────────── */
+/*  Scrollbar  */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
 
-/* ── Selection ────────────────────────────────────────── */
+/*  Selection  */
 ::selection { background: var(--accent); color: #0d0d0d; }
 
-/* ── Noise texture overlay ────────────────────────────── */
+/*  Noise texture overlay  */
 .noise-overlay {
   position: fixed;
   inset: 0;
@@ -113,7 +113,7 @@ body {
   background-size: 256px;
 }
 
-/* ── Utility classes ──────────────────────────────────── */
+/*  Utility classes*/
 .text-gradient {
   background: linear-gradient(135deg, var(--fg) 0%, var(--accent) 60%, var(--accent-light) 100%);
   -webkit-background-clip: text;
@@ -201,7 +201,7 @@ body {
   background: var(--border);
 }
 
-/* ── Preloader ────────────────────────────────────────── */
+/*  Preloader  */
 .preloader {
   position: fixed;
   inset: 0;
@@ -230,7 +230,7 @@ body {
   transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* ── Marquee ──────────────────────────────────────────── */
+/*  Marquee */
 .marquee-track { overflow: hidden; }
 .marquee-inner {
   display: flex;
@@ -247,7 +247,7 @@ body {
   to   { transform: translateX(-50%); }
 }
 
-/* ── Card hover ───────────────────────────────────────── */
+/*  Card hover  */
 .project-card {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
               box-shadow 0.4s ease;
@@ -262,7 +262,7 @@ body {
   box-shadow: 0 20px 60px rgba(0,0,0,0.40);
 }
 
-/* ── Skill pill ───────────────────────────────────────── */
+/* Skill pill */
 .skill-pill {
   display: inline-flex;
   align-items: center;
@@ -285,7 +285,7 @@ body {
   background: rgba(200,169,110,0.06);
 }
 
-/* ── Form ─────────────────────────────────────────────── */
+/*  Form */
 .form-input {
   width: 100%;
   background: var(--card-bg);
@@ -306,7 +306,7 @@ body {
   box-shadow: 0 0 0 3px rgba(200,169,110,0.12);
 }
 
-/* ── Reveal animations ────────────────────────────────── */
+/*  Reveal animations  */
 .reveal {
   opacity: 0;
   transform: translateY(28px);
@@ -343,7 +343,7 @@ body {
   transform: none;
 }
 
-/* ── Timeline ─────────────────────────────────────────── */
+/*  Timeline  */
 .timeline-line {
   position: absolute;
   left: 0;
@@ -354,7 +354,7 @@ body {
   opacity: 0.4;
 }
 
-/* ── Responsive nav ───────────────────────────────────── */
+/* Responsive nav */
 @media (max-width: 768px) {
   html { cursor: auto; }
   .cursor-dot, .cursor-ring { display: none !important; }

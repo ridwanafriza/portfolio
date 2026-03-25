@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, DM_Sans, DM_Mono } from "next/font/google";
+import { Playfair_Display, Poppins, DM_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -15,7 +15,7 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
-const dmSans = DM_Sans({
+const poppins = Poppins({
   subsets: ["latin"],
   variable: "--font-dm-sans",
   display: "swap",
@@ -62,7 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={`${playfair.variable} ${dmSans.variable} ${dmMono.variable}`}>
+      <body className={`${playfair.variable} ${poppins.variable} ${dmMono.variable}`}>
         {/* Noise overlay */}
         <div className="noise-overlay" aria-hidden="true" />
 

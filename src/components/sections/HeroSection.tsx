@@ -115,7 +115,7 @@ export default function HeroSection() {
 
         {/* Name */}
         <div className="overflow-hidden mb-4">
-          <h1 className="font-display font-medium leading-none" style={{ fontSize: "clamp(2.8rem, 8vw, 7rem)" }}>
+          <h1 className="font-display font-medium leading-none" style={{ fontSize: "clamp(2.2rem, 6vw, 5.5rem)", lineHeight: 1.1 }}>
             {words.map((word, wi) => (
               <span key={wi} className="inline-block overflow-hidden mr-[0.2em] last:mr-0">
                 <motion.span

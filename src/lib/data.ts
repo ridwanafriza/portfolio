@@ -17,7 +17,7 @@ import {
 export const profile = {
   name: "Ridwan Afriza Listiyono",
   tagline: "Mahasiswa D3 Teknologi Informasi",
-  subtitle: "Web Developer & IoT Enthusiast",
+  subtitle: "Web Developer & IT Enthusiast",
   about: `Mahasiswa aktif semester 3 program studi D3 Teknologi Informasi Politeknik Negeri Madiun yang tertarik mendalami pemrograman web dan cloud computing serta aktif berorganisasi di UKM. Siap berkembang dan beradaptasi dengan lingkungan baru, serta berkomitmen untuk terus meningkatkan keterampilan teknis maupun soft skill demi mendukung karier di bidang teknologi informasi.`,
   phone: "+(62)858-1561-7098",
   email: "ridwanafriza05@gmail.com",
@@ -44,12 +44,39 @@ export const education = [
 
 export const experience = [
   {
+    company: "PT Marstech Global",
+    role: "Web Developer Intern",
+    period: "5 Jan 2026 – Present",
+    type: "it",
+    tasks: [
+      "Mengembangkan sistem informasi Human Resource (HR) berbasis web",
+      "Membangun fitur manajemen data karyawan (CRUD)",
+      "Mengimplementasikan autentikasi dan pengelolaan akun pengguna",
+      "Mengintegrasikan API pada sistem HR",
+      "Mendesain UI menggunakan HTML, CSS, dan Bootstrap",
+      "Melakukan debugging dan pengujian sistem",
+    ],
+  },
+  {
     company: "PT Gunung Mas Bersinar",
     role: "Body Fabrication Intern",
     period: "Jan 2023 – April 2023",
+    type: "non-it",
     tasks: [
-      "Membantu proses produksi dan perakitan karoseri bus.",
-      "Melakukan pengecekan serta perakitan komponen sesuai standar.",
+      "Membantu proses produksi dan perakitan karoseri bus",
+      "Melakukan pengecekan kualitas komponen sesuai standar",
+      "Bekerja sama dalam tim produksi",
+    ],
+  },
+  {
+    company: "Bengkel Eko Motor",
+    role: "Teknisi Magang",
+    period: "2022 – 2023",
+    type: "non-it",
+    tasks: [
+      "Melakukan servis dan perawatan kendaraan",
+      "Mendiagnosis masalah dasar pada kendaraan",
+      "Membantu perbaikan dan penggantian komponen",
     ],
   },
 ];
@@ -123,7 +150,7 @@ export const certifications = [
   },
 ];
 
-// Marquee items — derived from skills & profile
+// Marquee items - derived from skills & profile
 export const marqueeItems = [
   "Web Development",
   "PHP & MySQL",
