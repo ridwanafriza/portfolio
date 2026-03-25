@@ -114,7 +114,7 @@ export default function ExperienceSection() {
               style={{ background: "var(--card-bg)", border: "1px dashed var(--border)", opacity: 0.6 }}
             >
               <p className="font-mono text-sm" style={{ color: "var(--fg-muted)" }}>
-                ✨ Pengalaman berikutnya sedang dalam perjalanan...
+                 Pengalaman berikutnya sedang dalam perjalanan...
               </p>
             </div>
           </motion.div>
