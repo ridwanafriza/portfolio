@@ -31,7 +31,7 @@ const dmMono = DM_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ridwan Afriza Listiyono — Web Developer & IT Student",
+  title: "Ridwan Afriza Listiyono",
   description:
     "Portfolio Ridwan Afriza Listiyono — Mahasiswa D3 Teknologi Informasi Politeknik Negeri Madiun, passionate dalam web development dan cloud computing.",
   keywords: ["web developer", "portfolio", "Ridwan Afriza", "Politeknik Negeri Madiun", "IT student"],

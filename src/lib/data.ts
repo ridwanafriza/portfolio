@@ -16,15 +16,14 @@ import {
 
 export const profile = {
   name: "Ridwan Afriza Listiyono",
-  tagline: "Mahasiswa D3 Teknologi Informasi",
+  tagline: "Ridwan Afriza Listiyono",
   subtitle: "Web Developer & IT Enthusiast",
   about: `Mahasiswa aktif semester 4 program studi D3 Teknologi Informasi Politeknik Negeri Madiun yang tertarik mendalami pemrograman web dan serta aktif berorganisasi di UKM. Siap berkembang dan beradaptasi dengan lingkungan baru, serta berkomitmen untuk terus meningkatkan keterampilan teknis maupun soft skill demi mendukung karier di bidang teknologi informasi.`,
-  phone: "+(62)858-1561-7098",
   email: "ridwanafriza05@gmail.com",
   location: "Magetan, Jawa Timur",
   linkedin: "https://www.linkedin.com/in/ridwanafriza",
   github: "https://github.com/ridwanafriza",
-  whatsapp: "6285815617098",
+  instagram: "https://instagram.com/ridwan_afrizaa"
 } as const;
 
 export const education = [
