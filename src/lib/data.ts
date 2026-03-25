@@ -53,7 +53,7 @@ export const experience = [
       "Membangun fitur manajemen data karyawan (CRUD)",
       "Mengimplementasikan autentikasi dan pengelolaan akun pengguna",
       "Mengintegrasikan API pada sistem HR",
-      "Mendesain UI menggunakan HTML, CSS, dan Bootstrap",
+      "Mendesain UI menggunakan Next JS, Primereact",
       "Melakukan debugging dan pengujian sistem",
     ],
   },
@@ -71,7 +71,7 @@ export const experience = [
   {
     company: "Bengkel Eko Motor",
     role: "Teknisi Magang",
-    period: "2022 – 2023",
+    period: "Juni 2023 – Sept 2023",
     type: "non-it",
     tasks: [
       "Melakukan servis dan perawatan kendaraan",
@@ -119,7 +119,7 @@ export const projects = [
 export const skills = [
   {
     category: "Web Development",
-    items: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+    items: ["Next JS", "CSS", "Primereact", "Express", "MySQL"],
     icon: Globe,
   },
   {
