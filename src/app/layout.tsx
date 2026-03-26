@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Preloader from "@/components/ui/Preloader";
 import SmoothScroll from "@/components/layout/SmoothScroll";
+import BackToTop from "@/components/ui/BackToTop";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -33,7 +34,7 @@ const dmMono = DM_Mono({
 export const metadata: Metadata = {
   title: "Ridwan Afriza Listiyono",
   description:
-    "Portfolio Ridwan Afriza Listiyono — Mahasiswa D3 Teknologi Informasi Politeknik Negeri Madiun, passionate dalam web development dan cloud computing.",
+    "Portfolio Ridwan Afriza Listiyono — Mahasiswa D3 Teknologi Informasi Politeknik Negeri Madiun, passionate dalam web development.",
   keywords: ["web developer", "portfolio", "Ridwan Afriza", "Politeknik Negeri Madiun", "IT student"],
   openGraph: {
     title: "Ridwan Afriza Listiyono — Web Developer",
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
           <main>{children}</main>
           <Footer />
+          <BackToTop />
         </SmoothScroll>
       </body>
     </html>
