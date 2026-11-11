@@ -145,6 +145,11 @@
 - v2.3: hero memuat LinkedIn & GitHub = deviasi sengaja dari referensi (amandemen pemilik), dicatat di AGENTS §3.2/§3.7 dan REFERENCE.
 
 ## Catatan Perubahan
+- 11 Nov 2026 (lanjutan 5) — **Fix mobile:** (1) pill hero kepotong tepi layar → pill kanan kini ditambatkan
+  dari sisi kanan (`right:-6%`) di ≤767px sehingga tidak pernah keluar viewport berapa pun lebar teksnya;
+  pill kiri digeser `left:-8%`, pill mengecil tipis (13px, padding 8×14). (2) Menu mobile **tutup tanpa
+  fade** → kelas overlay diubah `transition-opacity` → `transition-[opacity,visibility]` (dulu `invisible`
+  aktif seketika sehingga fade tidak terlihat). Docs: DESIGN §4/§5.1/§12. Build bersih.
 - 11 Nov 2026 (lanjutan 4) — **Revisi setelah cek live Vercel:** (1) hapus teks "Balasan biasanya cepat."
   di Kontak; (2) fix **logo Flutter terpotong** di kartu Pendidikan (bleed `-mr-10` dihapus — badge kini
   rata di dalam kartu, `overflow-hidden` tidak memotong lagi); (3) pill hero **UI/UX Designer diturunkan**

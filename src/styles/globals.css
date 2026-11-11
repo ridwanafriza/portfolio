@@ -409,11 +409,21 @@ section[id] { scroll-margin-top: 84px; }
 .pill-left  { left: -14%; top: 32%; rotate: -25deg; }
 .pill-right { left: 76%;  top: 12%; rotate: 15deg; }
 /* Pill ketiga (permintaan pemilik 10 Nov): di bawah pill kanan, sejajar tapi
-   lebih rendah — "UI/UX Designer". */
-/* Pill ketiga (permintaan pemilik 10 Nov): di bawah pill kanan, sejajar tapi
    lebih rendah — "UI/UX Designer". Digeser turun 27% → 33% (11 Nov, permintaan
    pemilik: "agak kebawahin"). */
 .pill-third { left: 76%;  top: 33%; rotate: 15deg; }
+
+/* Pill hero di MOBILE (bug 11 Nov: teks kepotong tepi layar — posisi `left`
+   berbasis % membuat pill kanan melewati viewport di layar sempit).
+   Solusi: pill kanan ditambatkan dari sisi KANAN (`right`) sehingga tepinya
+   tidak pernah keluar layar berapa pun lebar teksnya; pill kiri digeser masuk
+   sedikit; ukuran pill mengecil tipis agar proporsional. */
+@media (max-width: 767px) {
+  .pill { padding: 8px 14px; font-size: 0.8125rem; }
+  .pill-left { left: -8%; }
+  .pill-right,
+  .pill-third { left: auto; right: -6%; }
+}
 
 @media (min-width: 768px) {
   .hero-figure {

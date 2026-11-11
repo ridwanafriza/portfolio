@@ -166,7 +166,7 @@ Lihat tiap section. Aturan umum: `r-md`/`r-lg`, warna `--card` atau `--surface`,
   versi sebelumnya muncul-hilang mendadak dianggap kaku). Di section luar nav garis menghilang (fade).
   Menu mobile: garis `scale-x` tumbuh dari kiri. **Tanpa pill**.
 - **Kanan:** `<ThemeToggle>` (ikon Sun/Moon lucide 18px, hanya ikon, lingkaran 40px, `aria-label="Ganti tema"`) di kiri CTA, lalu `<ButtonCTA dark size="nav">Hubungi Saya</ButtonCTA>` → `#contact`.
-- **Mobile (<768px):** logo + tombol hamburger lingkaran; overlay penuh, link 28px/500, CTA di bawah, **baris ikon sosial** paling bawah. Fokus-trap + `Esc`.
+- **Mobile (<768px):** logo + tombol hamburger lingkaran; overlay penuh, link 28px/500, CTA di bawah, **baris ikon sosial** paling bawah. Fokus-trap + `Esc`. **Fade masuk & keluar sama halusnya** — kelas `transition-[opacity,visibility]` (bug 11 Nov: `transition-opacity` saja membuat `invisible` aktif seketika saat ditutup → menu hilang mendadak tanpa fade).
 - Toggle tema = amandemen pemilik (§9). Selain itu nav sama persis dengan referensi.
 
 ---
@@ -196,6 +196,8 @@ baju memudar ke biru arch sebelum dasar arch; tanpa border/shadow. `next/image` 
 **Pill (3):** kiri `Web Development` `rotate(-25deg)`; kanan atas `Mobile Development` `rotate(15deg)` (`left:76%; top:12%`);
 kanan bawah **`UI/UX Designer`** `rotate(15deg)` (`left:76%; top:33%`) — sejajar dengan pill kanan tapi lebih rendah
 (permintaan pemilik 11 Nov 2026). Gaya §3.2. Float ±6px.
+**Mobile (≤767px):** pill kanan ditambatkan `right:-6%` (bukan `left:%`) supaya tidak pernah kepotong
+tepi layar berapa pun lebar teksnya; pill kiri `left:-8%`; pill mengecil tipis (padding 8×14, 13px).
 
 **Teks kiri-bawah** (`absolute; left:container-edge; bottom:72px; max-w ≈46%`):
 1. `Halo, saya Ridwan Afriza Listiyono.` 15px `--fg-muted`
@@ -525,6 +527,9 @@ docs/reference/ (00…06 sesuai REFERENCE.md §0)
 ---
 
 ## 12. Catatan Perubahan
+- v2.9 · 11 Nov 2026 — revisi mobile (cek DevTools iPhone 16 Pro Max): (a) **pill hero tidak kepotong** —
+  pill kanan ditambatkan `right:-6%` di ≤767px, pill kiri `-8%`, ukuran mengecil tipis (§5.1); (b) **menu
+  mobile fade-out halus** — `transition-opacity` → `transition-[opacity,visibility]` (§4).
 - v2.8 · 11 Nov 2026 — revisi kecil setelah cek live Vercel: (a) teks bantu Kontak **"Balasan biasanya
   cepat." dihapus** (§5.7); (b) **logo Flutter di kartu Pendidikan tidak lagi terpotong** — bleed `-mr-10`
   dihapus, klaster badge rata di dalam kartu (§5.2); (c) pill hero **`UI/UX Designer` digeser turun**

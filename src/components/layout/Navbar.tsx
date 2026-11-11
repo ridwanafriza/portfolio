@@ -231,7 +231,7 @@ export default function Navbar() {
         id="mobile-menu"
         ref={panelRef}
         aria-hidden={!open}
-        className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-hero transition-opacity duration-300 md:hidden ${
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-hero transition-[opacity,visibility] duration-300 md:hidden ${
           open ? "opacity-100" : "pointer-events-none opacity-0 invisible"
         }`}
       >
