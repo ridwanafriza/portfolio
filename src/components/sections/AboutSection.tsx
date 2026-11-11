@@ -1,303 +1,170 @@
 "use client";
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "motion/react";
-import { MapPin, GraduationCap, Award } from "lucide-react";
-import { profile, education, certifications } from "@/lib/data";
+import SectionLabel from "@/components/ui/SectionLabel";
+import ButtonCTA from "@/components/ui/ButtonCTA";
+import Chip from "@/components/ui/Chip";
+import TechBadge from "@/components/ui/TechBadge";
+import { scrollToId } from "@/components/fx/SmoothScroll";
+import { profile, education, interests, hobbies, stats } from "@/lib/data";
+
+const ease = [0.16, 1, 0.3, 1] as const;
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.12, duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    transition: { delay: i * 0.1, duration: 0.6, ease },
   }),
 };
 
+/** Logo teknologi yang ditumpuk di kartu Pendidikan (terpotong tepi kanan). */
+const EDU_BADGES = ["next", "typescript", "laravel", "mysql", "flutter"];
+
 export default function AboutSection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-15%" });
+  // once:false — animasi jalan SETIAP masuk layar (permintaan pemilik 11 Nov).
+  // Keluar layar elemen kembali ke posisi awal; bila terasa berkedik, kembalikan ke true.
+  const inView = useInView(ref, { once: false, margin: "-15%" });
+
+  const goContact = (
+    e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>,
+  ) => {
+    e.preventDefault();
+    scrollToId("#contact");
+  };
 
   return (
-    <section
-      id="about"
-      ref={ref}
-      className="relative py-28 md:py-36 overflow-hidden"
-    >
-      {/* Background accent */}
-      <div
-        className="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="max-w-6xl mx-auto px-5 md:px-8 grid md:grid-cols-2 gap-16 md:gap-24 items-center">
-        {/* Left — portrait placeholder + stats */}
+    <section id="about" ref={ref} className="blend-from-hero py-24 md:py-32">
+      <div className="wrap grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+        {/* Kiri: label */}
         <motion.div
-          className="relative"
+          className="lg:col-span-4"
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
           variants={fadeUp}
           custom={0}
         >
-          {/* Avatar placeholder */}
-          <div className="relative w-full max-w-sm mx-auto aspect-[4/5]">
-            <div
-              className="absolute inset-0 rounded-2xl"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(200,169,110,0.15) 0%, rgba(13,13,13,0.05) 100%)",
-                border: "1px solid var(--border)",
-              }}
+          <SectionLabel>Tentang Saya</SectionLabel>
+        </motion.div>
+
+        {/* Kanan: pernyataan besar (H2 §2.2) */}
+        <motion.h2
+          className="lg:col-span-8 max-w-[660px] text-[clamp(2rem,3.4vw,3rem)] font-medium leading-[1.1] tracking-[-0.035em]"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={fadeUp}
+          custom={1}
+        >
+          {profile.about}
+        </motion.h2>
+
+        {/* CTA di bawah pernyataan (DESIGN §5.2 baris 1) */}
+        <motion.div
+          className="lg:col-span-8 lg:col-start-5"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={fadeUp}
+          custom={2}
+        >
+          <ButtonCTA href="#contact" size="md" onClick={goContact}>
+            Hubungi Saya
+          </ButtonCTA>
+        </motion.div>
+
+        {/* Baris 2 — bento, **komposisi dibalik dari referensi** (ATM): klaster
+            kiri (stat · pendidikan · minat & hobi), kartu foto di KANAN 35%.
+            Mobile tetap foto dulu (order DOM), desktop foto pindah kanan. */}
+        <motion.div
+          className="lg:col-span-12 mt-4 grid gap-4 lg:mt-12 lg:grid-cols-[1fr_35%] lg:gap-6"
+          initial="hidden"
+          animate={inView ? "visible" : "hidden"}
+          variants={fadeUp}
+          custom={3}
+        >
+          {/* Kartu foto — cutout menempel dasar, terpotong lurus oleh kartu */}
+          <div className="relative aspect-[4/5] overflow-hidden rounded-[24px] bg-surface lg:order-2 lg:aspect-auto lg:h-full lg:min-h-[490px]">
+            <Image
+              src="/screens/profil_ridwan.webp"
+              alt="Foto Ridwan Afriza Listiyono"
+              width={1402}
+              height={1122}
+              className="absolute inset-x-0 bottom-0 h-[86%] w-full object-cover"
             />
-            {/* Monogram */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span
-                className="font-display text-9xl font-medium"
-                style={{ color: "var(--accent)", opacity: 0.3 }}
-              >
-                RA
-              </span>
-            </div>
-
-            {/* Floating badge */}
-            <div
-              className="absolute -bottom-4 -right-4 px-4 py-3 rounded-xl"
-              style={{
-                background: "var(--card-bg)",
-                border: "1px solid var(--border)",
-                backdropFilter: "blur(12px)",
-              }}
-            >
-              <p
-                className="font-mono text-xs"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                Semester
-              </p>
-              <p
-                className="font-display text-2xl font-medium"
-                style={{ color: "var(--accent)" }}
-              >
-                4
-              </p>
-            </div>
-
-            {/* Location badge */}
-            <div
-              className="absolute -top-4 -left-4 px-4 py-2 rounded-xl flex items-center gap-2"
-              style={{
-                background: "var(--card-bg)",
-                border: "1px solid var(--border)",
-                backdropFilter: "blur(12px)",
-              }}
-            >
-              <MapPin size={16} strokeWidth={1.5} />
-              <span
-                className="font-mono text-xs"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                {profile.location}
-              </span>
-            </div>
           </div>
 
-          {/* Stats row */}
-          <div className="mt-8 grid grid-cols-3 gap-4 max-w-sm mx-auto">
-            {[
-              { label: "Proyek", value: "4+" },
-              { label: "Sertifikasi", value: "2" },
-              { label: "Pengalaman", value: "1" },
-            ].map((s) => (
+          {/* Klaster kartu — rata bawah dengan kartu foto */}
+          <div className="grid gap-4 self-end sm:grid-cols-2 lg:order-1">
+            {/* Stat */}
+            {stats.map((s) => (
               <div
-                key={s.label}
-                className="text-center p-4 rounded-xl"
-                style={{
-                  background: "var(--card-bg)",
-                  border: "1px solid var(--border)",
-                }}
+                key={s.value + s.label[0]}
+                className="flex min-h-[100px] items-center justify-between gap-4 rounded-[20px] bg-surface p-5"
               >
-                <p
-                  className="font-display text-2xl font-medium"
-                  style={{ color: "var(--accent)" }}
-                >
-                  {s.value}
+                <p className="text-[15px] leading-tight text-fg-muted">
+                  {s.label[0]}
+                  <br />
+                  {s.label[1]}
                 </p>
-                <p
-                  className="font-mono text-xs mt-1"
-                  style={{ color: "var(--fg-muted)" }}
-                >
-                  {s.label}
+                <p className="tabular text-[36px] font-medium leading-none">
+                  {s.value}
                 </p>
               </div>
             ))}
-          </div>
-        </motion.div>
 
-        {/* Right — bio + education */}
-        <div>
-          <motion.p
-            className="section-label mb-4"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={fadeUp}
-            custom={1}
-          >
-            Tentang Saya
-          </motion.p>
-
-          <motion.h2
-            className="font-display text-4xl md:text-5xl font-medium leading-tight mb-6"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={fadeUp}
-            custom={2}
-          >
-            Membangun Digital,{" "}
-            <em style={{ color: "var(--accent)" }}>Belajar Tanpa Batas</em>
-          </motion.h2>
-
-          <motion.p
-            className="text-base md:text-lg leading-relaxed mb-10"
-            style={{ color: "var(--fg-muted)" }}
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={fadeUp}
-            custom={3}
-          >
-            {profile.about}
-          </motion.p>
-
-          {/* Education */}
-          <motion.div
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={fadeUp}
-            custom={4}
-          >
-            <p
-              className="font-mono text-xs tracking-widest uppercase mb-4"
-              style={{ color: "var(--accent)" }}
-            >
-              Pendidikan
-            </p>
-            <div className="space-y-3">
-              {education.map((edu, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 p-4 rounded-xl"
-                  style={{
-                    background: "var(--card-bg)",
-                    border: "1px solid var(--border)",
-                  }}
-                >
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                    style={{
-                      background: "rgba(200,169,110,0.12)",
-                      color: "var(--accent)",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    <GraduationCap size={16} strokeWidth={1.5} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p
-                      className="font-medium text-sm"
-                      style={{ color: "var(--fg)" }}
-                    >
-                      {edu.institution}
-                    </p>
-                    <p
-                      className="text-xs mt-0.5"
-                      style={{ color: "var(--fg-muted)" }}
-                    >
+            {/* Kartu Pendidikan + klaster badge logo teknologi */}
+            <div className="flex flex-col overflow-hidden rounded-[20px] bg-surface p-6">
+              <h3 className="text-[1.375rem] font-medium tracking-[-0.02em]">
+                Pendidikan
+              </h3>
+              <ul className="mt-4 space-y-4">
+                {education.map((edu) => (
+                  <li key={edu.institution}>
+                    <p className="text-base font-medium leading-snug">
                       {edu.degree}
                     </p>
-                    {edu.note && (
-                      <span
-                        className="inline-block mt-1 px-2 py-0.5 rounded-full text-xs font-mono"
-                        style={{
-                          background: "rgba(200,169,110,0.1)",
-                          color: "var(--accent)",
-                        }}
-                      >
-                        {edu.note}
-                      </span>
-                    )}
-                  </div>
-                  <p
-                    className="font-mono text-xs flex-shrink-0"
-                    style={{ color: "var(--fg-muted)" }}
-                  >
-                    {edu.period}
-                  </p>
-                </div>
-              ))}
+                    <p className="mt-1 text-sm text-fg-muted">
+                      {edu.institution} · {edu.period}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+              {/* Terpotong tepi kanan kartu (pengganti klaster avatar referensi) */}
+              <div className="-mr-10 mt-auto flex justify-end space-x-[-12px] pt-7">
+                {EDU_BADGES.map((name) => (
+                  <TechBadge key={name} name={name} />
+                ))}
+              </div>
             </div>
-          </motion.div>
 
-          {/* Certs */}
-          <motion.div
-            className="mt-6"
-            initial="hidden"
-            animate={inView ? "visible" : "hidden"}
-            variants={fadeUp}
-            custom={5}
-          >
-            <p
-              className="font-mono text-xs tracking-widest uppercase mb-4"
-              style={{ color: "var(--accent)" }}
-            >
-              Sertifikasi
-            </p>
-            <div className="space-y-3">
-              {certifications.map((cert, i) => {
-                const Icon = cert.icon;
+            {/* Kartu Minat & Hobi */}
+            <div className="rounded-[20px] bg-surface p-6">
+              <h3 className="text-[1.375rem] font-medium tracking-[-0.02em]">
+                Minat &amp; Hobi
+              </h3>
 
-                return (
-                  <div
-                    key={i}
-                    className="flex items-center gap-3 p-3 rounded-xl"
-                    style={{
-                      background: "var(--card-bg)",
-                      border: "1px solid var(--border)",
-                    }}
-                  >
-                    <Icon
-                      size={18}
-                      strokeWidth={1.5}
-                      className="flex-shrink-0 text-[var(--accent)]"
-                    />
+              <p className="mt-4 text-sm text-fg-muted">Minat</p>
+              <ul className="mt-2 flex flex-wrap gap-2">
+                {interests.map((item) => (
+                  <li key={item}>
+                    <Chip>{item}</Chip>
+                  </li>
+                ))}
+              </ul>
 
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className="font-medium text-sm truncate"
-                        style={{ color: "var(--fg)" }}
-                      >
-                        {cert.title}
-                      </p>
-                      <p
-                        className="text-xs"
-                        style={{ color: "var(--fg-muted)" }}
-                      >
-                        {cert.issuer}
-                      </p>
-                    </div>
-
-                    <span
-                      className="font-mono text-xs flex-shrink-0"
-                      style={{ color: "var(--accent)" }}
-                    >
-                      {cert.year}
-                    </span>
-                  </div>
-                );
-              })}
+              <p className="mt-5 text-sm text-fg-muted">Hobi</p>
+              <ul className="mt-2 space-y-1.5">
+                {hobbies.map((item) => (
+                  <li key={item} className="text-sm leading-relaxed">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </motion.div>
-        </div>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

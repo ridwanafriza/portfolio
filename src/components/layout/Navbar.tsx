@@ -1,202 +1,290 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import ThemeToggle from "@/components/ui/ThemeToggle";
-import { profile } from "@/lib/data";
+import { motion, useReducedMotion } from "motion/react";
+import ThemeToggle from "@/components/layout/ThemeToggle";
+import ButtonCTA from "@/components/ui/ButtonCTA";
+import SocialIcon from "@/components/ui/SocialIcon";
+import { socials } from "@/lib/data";
+import { scrollToId, scrollToTop } from "@/components/fx/SmoothScroll";
 
 const navLinks = [
+  { label: "Beranda", href: "#hero" },
   { label: "Tentang", href: "#about" },
   { label: "Keahlian", href: "#skills" },
   { label: "Proyek", href: "#projects" },
   { label: "Pengalaman", href: "#experience" },
-  { label: "Kontak", href: "#contact" },
 ];
 
 export default function Navbar() {
+  const reduce = useReducedMotion();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("#about");
+  const [active, setActive] = useState("#hero");
 
-  const menuRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
 
+  /* Garis bawah meluncur — posisi & lebar diukur dari link aktif supaya
+     garisnya bergerak halus (permintaan pemilik 11 Nov: "jangan kaku") */
+  const listRef = useRef<HTMLUListElement>(null);
+  const btnRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const [bar, setBar] = useState({ left: 0, width: 0, shown: false });
+
+  /* Transparent → blur saat scroll (DESIGN §4) */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /* Scroll-spy: link aktif hanya lebih gelap/tebal, tanpa pill */
   useEffect(() => {
-    const sections = navLinks.map((link) =>
-      document.querySelector(link.href),
-    );
+    const sections = navLinks
+      .map((l) => document.querySelector(l.href))
+      .filter(Boolean) as Element[];
+    if (!sections.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(`#${entry.target.id}`);
-          }
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(`#${e.target.id}`);
         });
       },
-      {
-        rootMargin: "-40% 0px -50% 0px",
-      },
+      { rootMargin: "-40% 0px -50% 0px" },
     );
-
-    sections.forEach((sec) => {
-      if (sec) observer.observe(sec);
-    });
-
-    return () => {
-      sections.forEach((sec) => {
-        if (sec) observer.unobserve(sec);
-      });
-    };
+    sections.forEach((s) => observer.observe(s));
+    return () => sections.forEach((s) => observer.unobserve(s));
   }, []);
 
-  const handleLink = (href: string) => {
+  /* Menu overlay: Esc menutup, focus trap, kunci scroll */
+  useEffect(() => {
+    if (!open) return;
+    document.body.style.overflow = "hidden";
+
+    const first = panelRef.current?.querySelector<HTMLElement>("button, a");
+    first?.focus();
+
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpen(false);
+        burgerRef.current?.focus();
+        return;
+      }
+      if (e.key === "Tab") {
+        const nodes = Array.from(
+          panelRef.current?.querySelectorAll<HTMLElement>("button, a") ?? [],
+        );
+        if (!nodes.length) return;
+        const firstEl = nodes[0];
+        const lastEl = nodes[nodes.length - 1];
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  /* Ukur garis bawah mengikuti link aktif (dipanggil ulang saat resize /
+     font selesai dimuat supaya tidak meleset) */
+  useEffect(() => {
+    const measure = () => {
+      const el = btnRefs.current[active];
+      if (!el) {
+        // Section di luar nav (mis. Kontak) — garis menghilang dulu
+        setBar((b) => (b.shown ? { ...b, shown: false } : b));
+        return;
+      }
+      setBar({ left: el.offsetLeft, width: el.offsetWidth, shown: true });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    if (document.fonts) document.fonts.ready.then(measure).catch(() => {});
+    return () => window.removeEventListener("resize", measure);
+  }, [active]);
+
+  const go = (href: string) => {
     setActive(href);
     setOpen(false);
-
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
+    scrollToId(href); // lewat Lenis bila aktif; fallback scrollIntoView
   };
 
   return (
     <>
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-2 md:px-4"
-        style={{
-          background: scrolled ? "var(--card-bg)" : "transparent",
-          backdropFilter: scrolled ? "blur(20px)" : "none",
-          WebkitBackdropFilter: scrolled ? "blur(20px)" : "none",
-          borderBottom: scrolled ? "1px solid var(--border)" : "none",
-          boxShadow: scrolled ? "var(--shadow)" : "none",
-        }}
+      <motion.nav
+        initial={reduce ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6 }}
+        className={`fixed inset-x-0 top-0 z-50 h-[72px] border-b transition-all duration-300 ${
+          scrolled
+            ? "border-line bg-[var(--nav-bg)] backdrop-blur-md"
+            : "border-transparent bg-transparent"
+        }`}
       >
-        <div className="w-full h-16 flex items-center justify-between">
-
-          {/* LEFT (LOGO) */}
-          <div className="flex items-center pl-4 md:pl-6">
+        <div className="wrap flex h-full items-center justify-between gap-4">
+          {/* Kiri: logo + nama + link tepat di sebelahnya (DESIGN §4) */}
+          <div className="flex min-w-0 items-center gap-6">
             <a
-              href="#"
-              className="font-display font-medium text-xl tracking-tight hover:opacity-70"
-              style={{ color: "var(--fg)" }}
+              href="#hero"
               onClick={(e) => {
                 e.preventDefault();
-                window.scrollTo({ top: 0, behavior: "smooth" });
+                scrollToTop();
               }}
+              className="flex shrink-0 items-center gap-3"
+              aria-label="Ridwan Afriza Listiyono — ke atas"
             >
-              <span style={{ color: "var(--accent)" }}>R</span>A
-              <span
-                className="hidden sm:inline font-body text-sm ml-2"
-                style={{ color: "var(--fg-muted)" }}
-              >
-                — {profile.tagline}
+              <span className="flex h-8 w-8 items-center justify-center rounded-sm bg-accent text-sm font-semibold text-white">
+                R
+              </span>
+              <span className="text-[21px] font-medium leading-none tracking-[-0.03em]">
+                Ridwan
               </span>
             </a>
-          </div>
 
-          {/* CENTER (NAV) */}
-          <ul className="hidden md:flex items-center gap-2 relative">
-            {navLinks.map(({ label, href }) => (
-              <li key={href} className="relative">
-                {active === href && (
-                  <motion.span
-                    layoutId="nav-highlight"
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      background: "var(--accent)",
-                      opacity: 0.15,
+            <ul ref={listRef} className="relative hidden items-center gap-6 md:flex">
+              {navLinks.map(({ label, href }) => (
+                <li key={href}>
+                  <button
+                    ref={(el) => {
+                      btnRefs.current[href] = el;
                     }}
-                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                  />
-                )}
-
-                <button
-                  onClick={() => handleLink(href)}
-                  className="relative z-10 px-4 py-2 rounded-full text-sm font-medium"
-                  style={{
-                    color:
+                    onClick={() => go(href)}
+                    className={`pb-1.5 text-sm transition-colors ${
                       active === href
-                        ? "var(--accent)"
-                        : "var(--fg-muted)",
-                  }}
-                >
-                  {label}
-                </button>
-              </li>
-            ))}
-          </ul>
+                        ? "font-semibold text-fg"
+                        : "font-medium text-fg-muted hover:text-fg"
+                    }`}
+                    aria-current={active === href ? "page" : undefined}
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
 
-          {/* RIGHT (TOGGLE + MENU) */}
-          <div className="flex items-center gap-3 pr-4 md:pr-6">
+              {/* Satu garis yang MELUNCUR ke link aktif (bukan muncul-hilang) */}
+              <span
+                aria-hidden="true"
+                className="absolute bottom-0 left-0 h-0.5 rounded-full bg-fg transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none"
+                style={{
+                  width: bar.width,
+                  transform: `translateX(${bar.left}px)`,
+                  opacity: bar.shown ? 1 : 0,
+                }}
+              />
+            </ul>
+          </div>
+
+          {/* Kanan: toggle tema + CTA (ButtonCTA) + hamburger */}
+          <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
+            <span className="hidden md:inline-flex">
+              <ButtonCTA
+                href="#contact"
+                size="nav"
+                onClick={(e) => {
+                  e.preventDefault();
+                  go("#contact");
+                }}
+              >
+                Hubungi Saya
+              </ButtonCTA>
+            </span>
 
             <button
-              className="flex md:hidden flex-col gap-1.5 p-2"
+              ref={burgerRef}
+              className="btn btn-circle md:hidden"
               onClick={() => setOpen((v) => !v)}
+              aria-label={open ? "Tutup menu" : "Buka menu"}
+              aria-expanded={open}
+              aria-controls="mobile-menu"
             >
-              <span
-                className="block w-5 h-px transition-all duration-300"
-                style={{
-                  background: "var(--fg)",
-                  transform: open
-                    ? "rotate(45deg) translate(3px, 3px)"
-                    : "none",
-                }}
-              />
-              <span
-                className="block w-5 h-px transition-all duration-300"
-                style={{
-                  background: "var(--fg)",
-                  opacity: open ? 0 : 1,
-                }}
-              />
-              <span
-                className="block w-5 h-px transition-all duration-300"
-                style={{
-                  background: "var(--fg)",
-                  transform: open
-                    ? "rotate(-45deg) translate(3px, -3px)"
-                    : "none",
-                }}
-              />
+              <span className="relative block h-3 w-4">
+                <span
+                  className="absolute inset-x-0 top-0 h-0.5 bg-current transition-transform duration-300"
+                  style={{ transform: open ? "translateY(5px) rotate(45deg)" : "none" }}
+                />
+                <span
+                  className="absolute inset-x-0 top-1.5 h-0.5 bg-current transition-opacity duration-200"
+                  style={{ opacity: open ? 0 : 1 }}
+                />
+                <span
+                  className="absolute inset-x-0 top-3 h-0.5 bg-current transition-transform duration-300"
+                  style={{ transform: open ? "translateY(-5px) rotate(-45deg)" : "none" }}
+                />
+              </span>
             </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
-      {/* MOBILE MENU */}
+      {/* Menu overlay mobile */}
       <div
-        ref={menuRef}
-        className="fixed inset-0 z-40 md:hidden transition-all duration-500 flex flex-col"
-        style={{
-          background: "var(--bg)",
-          pointerEvents: open ? "auto" : "none",
-          opacity: open ? 1 : 0,
-        }}
+        id="mobile-menu"
+        ref={panelRef}
+        aria-hidden={!open}
+        className={`fixed inset-0 z-40 flex flex-col items-center justify-center gap-7 bg-hero transition-opacity duration-300 md:hidden ${
+          open ? "opacity-100" : "pointer-events-none opacity-0 invisible"
+        }`}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-4">
-          {navLinks.map(({ label, href }, i) => (
-            <button
-              key={href}
-              onClick={() => handleLink(href)}
-              className="text-4xl font-display"
-              style={{
-                color:
-                  active === href
-                    ? "var(--accent)"
-                    : "var(--fg)",
-                transform: open ? "none" : "translateY(20px)",
-                opacity: open ? 1 : 0,
-                transitionDelay: `${i * 80}ms`,
-              }}
-            >
+        {navLinks.map(({ label, href }) => (
+          <button
+            key={href}
+            onClick={() => go(href)}
+            tabIndex={open ? 0 : -1}
+            className={`text-[28px] font-semibold tracking-tight ${
+              active === href ? "text-fg" : "text-fg-muted"
+            }`}
+          >
+            <span className="relative inline-block pb-1.5">
               {label}
-            </button>
-          ))}
+              {/* Garis tumbuh halus (scale-x) — versi menu mobile */}
+              <span
+                aria-hidden="true"
+                className={`absolute inset-x-0 bottom-0 h-0.5 origin-left rounded-full bg-current transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+                  active === href ? "scale-x-100" : "scale-x-0"
+                }`}
+              />
+            </span>
+          </button>
+        ))}
+        <div className="mt-2">
+          <ButtonCTA
+            href="#contact"
+            size="md"
+            onClick={(e) => {
+              e.preventDefault();
+              go("#contact");
+            }}
+          >
+            Hubungi Saya
+          </ButtonCTA>
         </div>
+
+        {/* Baris ikon sosial paling bawah (DESIGN §4) */}
+        <nav className="mt-1 flex gap-3" aria-label="Sosial">
+          {socials.map((s) => (
+            <a
+              key={s.id}
+              href={s.href}
+              target={s.href.startsWith("http") ? "_blank" : undefined}
+              rel="noopener noreferrer"
+              aria-label={`${s.label} Ridwan`}
+              tabIndex={open ? 0 : -1}
+              className="flex h-11 w-11 items-center justify-center rounded-full bg-fg text-[var(--on-fg)] transition-colors hover:bg-accent hover:text-white"
+            >
+              <SocialIcon id={s.id} size={18} />
+            </a>
+          ))}
+        </nav>
       </div>
     </>
   );

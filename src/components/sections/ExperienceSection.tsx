@@ -1,123 +1,77 @@
 "use client";
 import { useRef } from "react";
 import { motion, useInView } from "motion/react";
+import SectionLabel from "@/components/ui/SectionLabel";
+import Chip from "@/components/ui/Chip";
 import { experience } from "@/lib/data";
 
+const ease = [0.16, 1, 0.3, 1] as const;
+
+/**
+ * Pengalaman — **komposisi dimodifikasi dari referensi** (ATM):
+ * referensi memakai kartu bertumpuk; versi ini memakai **baris hairline**
+ * (peran + organisasi + poin di kiri, chip periode di kanan) tanpa kartu —
+ * lebih ramping, dan konsisten dengan larangan "semua elemen dibungkus kartu".
+ */
 export default function ExperienceSection() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-15%" });
+  // once:false — animasi mengulang tiap section masuk layar (permintaan 11 Nov)
+  const inView = useInView(ref, { once: false, margin: "-15%" });
+
+  const rise = (delay: number) => ({
+    initial: { opacity: 0, y: 20 },
+    animate: inView ? { opacity: 1, y: 0 } : {},
+    transition: { delay, duration: 0.6, ease },
+  });
 
   return (
-    <section id="experience" className="py-28 md:py-36">
-      <div className="max-w-6xl mx-auto px-5 md:px-8">
-        {/* Header */}
-        <div className="text-center mb-16" ref={ref}>
-          <motion.p
-            className="section-label justify-center mb-4"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-          >
-            Pengalaman
-          </motion.p>
+    <section id="experience" ref={ref} className="section-alt bg-bg-alt py-24 md:py-32">
+      <div className="wrap grid gap-10 lg:grid-cols-12 lg:gap-x-6">
+        {/* Kiri: label */}
+        <motion.div className="lg:col-span-4" {...rise(0)}>
+          <SectionLabel>Pengalaman</SectionLabel>
+        </motion.div>
+
+        <div className="lg:col-span-8">
           <motion.h2
-            className="font-display text-4xl md:text-5xl font-medium"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-10 text-[clamp(2rem,3.2vw,2.75rem)] font-medium leading-[1.15] tracking-[-0.025em]"
+            {...rise(0.08)}
           >
-            Perjalanan{" "}
-            <em style={{ color: "var(--accent)" }}>Profesional</em>
+            Pengalaman magang sebagai Web Developer.
           </motion.h2>
-        </div>
 
-        {/* Timeline */}
-        <div className="max-w-2xl mx-auto relative">
-          {/* Vertical line */}
-          <div
-            className="absolute left-0 top-0 w-px h-full"
-            style={{ background: "linear-gradient(to bottom, transparent, var(--accent), transparent)", opacity: 0.35, marginLeft: "1.75rem" }}
-          />
-
-          {experience.map((job, i) => (
-            <motion.div
-              key={i}
-              className="relative pl-16 pb-12 last:pb-0"
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: 0.2 + i * 0.15, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            >
-              {/* Dot on timelinee */}
-              <div
-                className="absolute left-0 top-1.5 w-4 h-4 rounded-full ml-[1.15rem]"
-                style={{
-                  background: "var(--accent)",
-                  boxShadow: "0 0 0 4px var(--bg), 0 0 0 5px var(--accent)",
-                }}
-              />
-
-              {/* Card */}
-              <div
-                className="p-6 rounded-2xl"
-                style={{ background: "var(--card-bg)", border: "1px solid var(--border)" }}
+          {/* Baris hairline — bukan kartu */}
+          <div className="border-t border-line">
+            {experience.map((job, i) => (
+              <motion.article
+                key={job.org}
+                className="grid gap-3 border-b border-line py-7 md:grid-cols-[1fr_auto] md:items-start md:gap-8"
+                {...rise(0.16 + i * 0.08)}
               >
-                {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
-                  <div>
-                    <h3 className="font-display text-xl font-medium" style={{ color: "var(--fg)" }}>
-                      {job.role}
-                    </h3>
-                    <p className="text-xs font-mono opacity-70">
-                      {job.type === "it" ? " IT Experience" : " Technical Experience"}
-                    </p>
-                    <p className="text-sm font-medium mt-0.5" style={{ color: "var(--accent)" }}>
-                      {job.company}
-                    </p>
-                  </div>
-                  <span
-                    className="px-3 py-1 rounded-full text-xs font-mono self-start whitespace-nowrap"
-                    style={{ background: "rgba(200,169,110,0.1)", color: "var(--accent)" }}
-                  >
-                    {job.period}
-                  </span>
+                <div>
+                  <h3 className="text-xl font-medium tracking-[-0.02em]">
+                    {job.role}
+                  </h3>
+                  <p className="mt-1 text-sm text-fg-muted">{job.org}</p>
+
+                  <ul className="mt-4 space-y-2">
+                    {job.tasks.slice(0, 3).map((task) => (
+                      <li
+                        key={task}
+                        className="text-[15px] leading-relaxed text-fg-muted"
+                      >
+                        {task}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                {/* Tasks */}
-                <ul className="space-y-2">
-                  {job.tasks.map((task, ti) => (
-                    <li key={ti} className="flex items-start gap-3 text-sm" style={{ color: "var(--fg-muted)" }}>
-                      <span className="mt-1 w-1 h-1 rounded-full flex-shrink-0" style={{ background: "var(--accent)" }} />
-                      {task}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </motion.div>
-          ))}
-
-          {/* "Selanjutnya" placeholder */}
-          <motion.div
-            className="relative pl-16"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.5 }}
-          >
-            <div
-              className="absolute left-0 top-1.5 w-4 h-4 rounded-full ml-[1.15rem]"
-              style={{
-                background: "var(--bg)",
-                border: "2px dashed var(--accent)",
-                opacity: 0.5,
-              }}
-            />
-            <div
-              className="p-5 rounded-2xl"
-              style={{ background: "var(--card-bg)", border: "1px dashed var(--border)", opacity: 0.6 }}
-            >
-              <p className="font-mono text-sm" style={{ color: "var(--fg-muted)" }}>
-                 Pengalaman berikutnya sedang dalam perjalanan...
-              </p>
-            </div>
-          </motion.div>
+                {job.period && (
+                  <Chip className="w-fit shrink-0 md:mt-1">{job.period}</Chip>
+                )}
+              </motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

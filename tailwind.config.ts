@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // Tema lewat kelas `dark` di <html> (DESIGN §9 — amandemen pemilik 8 Nov 2026).
   darkMode: "class",
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,82 +11,55 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        display: ["var(--font-playfair)", "Georgia", "serif"],
-        body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-dm-mono)", "monospace"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
+      // Sinkron dengan CSS token (globals.css) — tanpa hex acak di komponen.
       colors: {
-        ink: {
-          DEFAULT: "#0d0d0d",
-          50: "#f5f5f0",
-          100: "#e8e8e0",
-          200: "#c8c8b8",
-          300: "#a0a088",
-          400: "#787858",
-          500: "#585838",
-          600: "#3c3c28",
-          700: "#242418",
-          800: "#141410",
-          900: "#0d0d0d",
+        hero: "var(--hero-bg)",
+        bg: {
+          DEFAULT: "var(--bg)",
+          alt: "var(--bg-alt)",
         },
-        cream: {
-          DEFAULT: "#f8f5ee",
-          50: "#fdfcf8",
-          100: "#f8f5ee",
-          200: "#ede8d8",
-          300: "#ddd5be",
-          400: "#c8bda0",
-          500: "#b0a080",
+        surface: "var(--surface)",
+        card: "var(--card)",
+        chip: "var(--chip)",
+        number: "var(--number-ghost)",
+        navy: "var(--navy)",
+        "navy-edge": "var(--navy-edge)",
+        glass: "var(--glass)",
+        fg: {
+          DEFAULT: "var(--fg)",
+          muted: "var(--fg-muted)",
         },
+        line: "var(--border)",
         accent: {
-          DEFAULT: "#c8a96e",
-          light: "#e0c89a",
-          dark: "#a07840",
+          DEFAULT: "var(--accent)",
+          strong: "var(--accent-strong)",
+          soft: "var(--accent-soft)",
         },
-        muted: "#888880",
+        "on-accent": "var(--on-accent)",
+        "on-fg": "var(--on-fg)",
       },
-      animation: {
-        "fade-up": "fadeUp 0.7s ease forwards",
-        "fade-in": "fadeIn 0.5s ease forwards",
-        marquee: "marquee 25s linear infinite",
-        "marquee-reverse": "marqueeReverse 25s linear infinite",
-        "cursor-glow": "cursorGlow 2s ease-in-out infinite",
-        float: "float 6s ease-in-out infinite",
-        shimmer: "shimmer 2s linear infinite",
+      borderRadius: {
+        sm: "var(--r-sm)",
+        md: "var(--r-md)",
+        lg: "var(--r-lg)",
+        xl: "var(--r-xl)",
       },
-      keyframes: {
-        fadeUp: {
-          "0%": { opacity: "0", transform: "translateY(30px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-        marquee: {
-          "0%": { transform: "translateX(0)" },
-          "100%": { transform: "translateX(-50%)" },
-        },
-        marqueeReverse: {
-          "0%": { transform: "translateX(-50%)" },
-          "100%": { transform: "translateX(0)" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0px)" },
-          "50%": { transform: "translateY(-12px)" },
-        },
-        shimmer: {
-          "0%": { backgroundPosition: "-200% 0" },
-          "100%": { backgroundPosition: "200% 0" },
-        },
+      boxShadow: {
+        sm: "var(--shadow-sm)",
+        md: "var(--shadow-md)",
       },
       backgroundImage: {
-        "grain": "url('/grain.svg')",
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        arch: "var(--arch-gradient)",
+        cta: "var(--cta-gradient)",
+        ghost: "var(--ghost-gradient)",
+        navy: "var(--navy-bg)",
+        "blue-card": "var(--blue-card)",
+        project: "var(--project-gradient)",
       },
       transitionTimingFunction: {
         "expo-out": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "expo-in-out": "cubic-bezier(0.87, 0, 0.13, 1)",
       },
     },
   },

@@ -1,45 +1,42 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Poppins, DM_Mono } from "next/font/google";
+import { Inter_Tight } from "next/font/google";
 import "@/styles/globals.css";
 import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import CustomCursor from "@/components/ui/CustomCursor";
-import Preloader from "@/components/ui/Preloader";
-import SmoothScroll from "@/components/layout/SmoothScroll";
 import BackToTop from "@/components/ui/BackToTop";
+import SmoothScroll from "@/components/fx/SmoothScroll";
+import CustomCursor from "@/components/fx/CustomCursor";
+import Preloader from "@/components/fx/Preloader";
 
-const playfair = Playfair_Display({
+// Pra-render SEBELUM paint: terapkan tema tersimpan + status preloader
+// (anti-flash & pengunjung sesi berikutnya tidak melihat preloader).
+const preRenderScript = `(function(){try{if(localStorage.getItem("theme")==="dark")document.documentElement.classList.add("dark");if(sessionStorage.getItem("pl"))document.documentElement.classList.add("pl-done");}catch(e){}})();`;
+
+// Satu-satunya font: Inter Tight (DESIGN.md §2.2) — tidak ada font mono.
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-sans",
   display: "swap",
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-});
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  variable: "--font-dm-sans",
-  display: "swap",
-  weight: ["300", "400", "500"],
-  style: ["normal", "italic"],
-});
-
-const dmMono = DM_Mono({
-  subsets: ["latin"],
-  variable: "--font-dm-mono",
-  display: "swap",
-  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "Ridwan Afriza Listiyono",
+  title: "Ridwan Afriza Listiyono — Web, Mobile & UI/UX Designer",
   description:
-    "Portfolio Ridwan Afriza Listiyono — Mahasiswa D3 Teknologi Informasi Politeknik Negeri Madiun, passionate dalam web development.",
-  keywords: ["web developer", "portfolio", "Ridwan Afriza", "Politeknik Negeri Madiun", "IT student"],
+    "Portofolio Ridwan Afriza Listiyono — pengembang web & mobile serta desainer UI/UX.",
+  keywords: [
+    "web developer",
+    "mobile developer",
+    "UI/UX designer",
+    "portfolio",
+    "Ridwan Afriza Listiyono",
+    "Politeknik Negeri Madiun",
+  ],
   openGraph: {
-    title: "Ridwan Afriza Listiyono — Web Developer",
-    description: "Portfolio personal — web development, IoT, & teknologi informasi.",
+    title: "Ridwan Afriza Listiyono — Web, Mobile & UI/UX Designer",
+    description:
+      "Portofolio Ridwan Afriza Listiyono — pengembang web & mobile serta desainer UI/UX.",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630 }],
   },
 };
 
@@ -47,39 +44,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var theme = localStorage.getItem('theme');
-                  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                  if (theme === 'dark' || (!theme && prefersDark)) {
-                    document.documentElement.classList.add('dark');
-                  }
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
+        <script dangerouslySetInnerHTML={{ __html: preRenderScript }} />
+        <noscript>
+          <style>{`.preloader{display:none}`}</style>
+        </noscript>
       </head>
-      <body className={`${playfair.variable} ${poppins.variable} ${dmMono.variable}`}>
-        {/* Noise overlay */}
-        <div className="noise-overlay" aria-hidden="true" />
-
-        {/* Custom cursor */}
+      <body className={interTight.variable}>
+        <SmoothScroll />
         <CustomCursor />
-
-        {/* Preloader */}
         <Preloader />
-
-        {/* Smooth scroll wrapper */}
-        <SmoothScroll>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-          <BackToTop />
-        </SmoothScroll>
+        <Navbar />
+        <main>{children}</main>
+        <BackToTop />
       </body>
     </html>
   );
