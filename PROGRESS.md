@@ -145,6 +145,10 @@
 - v2.3: hero memuat LinkedIn & GitHub = deviasi sengaja dari referensi (amandemen pemilik), dicatat di AGENTS §3.2/§3.7 dan REFERENCE.
 
 ## Catatan Perubahan
+- 11 Nov 2026 (lanjutan 4) — **Revisi setelah cek live Vercel:** (1) hapus teks "Balasan biasanya cepat."
+  di Kontak; (2) fix **logo Flutter terpotong** di kartu Pendidikan (bleed `-mr-10` dihapus — badge kini
+  rata di dalam kartu, `overflow-hidden` tidak memotong lagi); (3) pill hero **UI/UX Designer diturunkan**
+  `top:27%` → `33%`. Docs: DESIGN §5.1/§5.7/§12, CONTENT §5. Build bersih.
 - 11 Nov 2026 (lanjutan 3) — **3 permintaan pemilik:** (1) *Transisi gradasi antar section* — kelas
   `.blend-from-hero` / `.section-navy` / `.section-navy-top` / `.section-alt` di `globals.css`
   (`background-image`, di bawah konten); batas putih↔navy kini meleleh, terutama menuju navy (DESIGN §6c).

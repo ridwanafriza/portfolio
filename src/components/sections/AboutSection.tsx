@@ -131,8 +131,9 @@ export default function AboutSection() {
                   </li>
                 ))}
               </ul>
-              {/* Terpotong tepi kanan kartu (pengganti klaster avatar referensi) */}
-              <div className="-mr-10 mt-auto flex justify-end space-x-[-12px] pt-7">
+              {/* Klaster badge — RATA DI DALAM kartu (bleed -mr-10 dihapus karena
+                  logo Flutter terpotong `overflow-hidden`; permintaan pemilik 11 Nov) */}
+              <div className="mt-auto flex justify-end space-x-[-12px] pt-7">
                 {EDU_BADGES.map((name) => (
                   <TechBadge key={name} name={name} />
                 ))}

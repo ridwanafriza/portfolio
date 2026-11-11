@@ -52,13 +52,7 @@ export default function ContactSection() {
               Ayo ngobrol.
             </motion.h2>
 
-            <motion.p
-              className="mt-5 text-base text-white/80 md:text-lg"
-              {...rise(0.14)}
-            >
-              Balasan biasanya cepat.
-            </motion.p>
-
+            {/* Tanpa paragraf tambahan — pemilik minta "Balasan biasanya cepat." dihapus (11 Nov) */}
             <motion.div className="mt-8" {...rise(0.2)}>
               <ButtonCTA href={waLink} variant="light" size="lg" whatsapp>
                 Hubungi Saya via WhatsApp

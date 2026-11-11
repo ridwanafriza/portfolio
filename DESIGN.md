@@ -194,7 +194,7 @@ Tinggi `min-height:min(100svh,880px)`, `overflow:hidden`, `background:var(--hero
 baju memudar ke biru arch sebelum dasar arch; tanpa border/shadow. `next/image` + `priority`.
 
 **Pill (3):** kiri `Web Development` `rotate(-25deg)`; kanan atas `Mobile Development` `rotate(15deg)` (`left:76%; top:12%`);
-kanan bawah **`UI/UX Designer`** `rotate(15deg)` (`left:76%; top:27%`) — sejajar dengan pill kanan tapi lebih rendah
+kanan bawah **`UI/UX Designer`** `rotate(15deg)` (`left:76%; top:33%`) — sejajar dengan pill kanan tapi lebih rendah
 (permintaan pemilik 11 Nov 2026). Gaya §3.2. Float ±6px.
 
 **Teks kiri-bawah** (`absolute; left:container-edge; bottom:72px; max-w ≈46%`):
@@ -299,7 +299,7 @@ Tanpa gambar → blok gradasi lembut + judul. Jika sertifikat hanya 1–2, kartu
 
 Satu section navy penuh lebar: `--navy-bg`, `py-28`, container kecil (855px), rata kiri.
 1. H2 putih 2 baris: **"Punya proyek atau ide? / Ayo ngobrol."**
-2. Teks bantu 1 kalimat (putih 80%): "Balasan biasanya cepat."
+2. ~~Teks bantu 1 kalimat (putih 80%): "Balasan biasanya cepat."~~ **Dihapus** (permintaan pemilik 11 Nov 2026) — H2 langsung ke tombol WhatsApp.
 3. **Tombol utama:** `<ButtonCTA light whatsapp>Hubungi Saya via WhatsApp</ButtonCTA>` — ukuran besar (tinggi 56px),
    `href=waLink`, `target="_blank"`, `rel="noopener noreferrer"`. **Elemen paling kontras di halaman.**
 4. **Daftar tautan** (kolom kanan, deviasi ATM §6b): baris `border-t` + baris terakhir `border-b`
@@ -525,6 +525,10 @@ docs/reference/ (00…06 sesuai REFERENCE.md §0)
 ---
 
 ## 12. Catatan Perubahan
+- v2.8 · 11 Nov 2026 — revisi kecil setelah cek live Vercel: (a) teks bantu Kontak **"Balasan biasanya
+  cepat." dihapus** (§5.7); (b) **logo Flutter di kartu Pendidikan tidak lagi terpotong** — bleed `-mr-10`
+  dihapus, klaster badge rata di dalam kartu (§5.2); (c) pill hero **`UI/UX Designer` digeser turun**
+  `top:27%` → `33%` (§5.1).
 - v2.7 · 11 Nov 2026 — (a) **Transisi gradasi antar section** (§6c): batas warna tidak terpotong tajam —
   `.blend-from-hero`, `.section-navy`, `.section-navy-top`, `.section-alt` (gradien `background-image` di bawah
   konten). (b) **Animasi scroll mengulang** — `useInView` semua section `once:true` → `once:false` (§8).

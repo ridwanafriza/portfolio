@@ -118,7 +118,7 @@ export const socials = [
 | Kartu CTA Keahlian | `Ayo Berkolaborasi` (chip: `Siap berkolaborasi`) |
 | H2 Kontak | `Punya proyek atau ide? / Ayo ngobrol.` |
 | Tombol utama | `Hubungi Saya via WhatsApp` |
-| Teks bantu | `Balasan biasanya cepat.` |
+| Teks bantu | ~~`Balasan biasanya cepat.`~~ — **dihapus** (permintaan pemilik 11 Nov 2026); H2 langsung ke tombol WhatsApp |
 | Footer | `© 2026 Ridwan Afriza Listiyono.` |
 
 **Pola penulisan**

@@ -410,7 +410,10 @@ section[id] { scroll-margin-top: 84px; }
 .pill-right { left: 76%;  top: 12%; rotate: 15deg; }
 /* Pill ketiga (permintaan pemilik 10 Nov): di bawah pill kanan, sejajar tapi
    lebih rendah — "UI/UX Designer". */
-.pill-third { left: 76%;  top: 27%; rotate: 15deg; }
+/* Pill ketiga (permintaan pemilik 10 Nov): di bawah pill kanan, sejajar tapi
+   lebih rendah — "UI/UX Designer". Digeser turun 27% → 33% (11 Nov, permintaan
+   pemilik: "agak kebawahin"). */
+.pill-third { left: 76%;  top: 33%; rotate: 15deg; }
 
 @media (min-width: 768px) {
   .hero-figure {
