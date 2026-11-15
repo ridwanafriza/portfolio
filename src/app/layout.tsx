@@ -6,6 +6,7 @@ import BackToTop from "@/components/ui/BackToTop";
 import SmoothScroll from "@/components/fx/SmoothScroll";
 import CustomCursor from "@/components/fx/CustomCursor";
 import Preloader from "@/components/fx/Preloader";
+import NavyFlood from "@/components/fx/NavyFlood";
 
 // Pra-render SEBELUM paint: terapkan tema tersimpan + status preloader
 // (anti-flash & pengunjung sesi berikutnya tidak melihat preloader).
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <SmoothScroll />
         <CustomCursor />
         <Preloader />
+        <NavyFlood />
         <Navbar />
         <main>{children}</main>
         <BackToTop />

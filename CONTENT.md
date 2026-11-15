@@ -40,7 +40,7 @@
 - [ ] **Deploy public** → salin link ke spreadsheet pengumpulan
 - [ ] `<title>` & meta description memuat nama lengkap
 
-Pesan awal WhatsApp: `Halo Ridwan, saya melihat portofolio kamu dan ingin berdiskusi.`
+Pesan awal WhatsApp: `Halo Ridwan, saya tertarik untuk bekerja sama. Boleh diskusi?`
 
 ---
 

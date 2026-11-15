@@ -11,6 +11,16 @@
 3. **Data sosial asli** sudah ada di `CONTENT.md` §4 (WhatsApp, LinkedIn, GitHub, Instagram). Email asli juga sudah ada (`ridwanafriza09@gmail.com`, `mailto:`).
 4. **Pendekatan ATM** (`AGENTS.md` §2b): pola ditiru, aset/teks/kode wajib asli; tulis kredit inspirasi di `README.md`.
 
+## 🆕 Tambahan v2.4 (15 Nov 2026) — Navy Flood
+- Efek scroll satu arah: saat scroll **ke bawah** menembus garis 55% viewport pada `#skills`/`#contact`,
+  latar halaman meluap ke navy sekali (masuk **500ms**); keluar saat scroll ke bawah melewati section
+  (**250ms**); scroll **ke atas** melewati ambang → **langsung tanpa animasi**. Tanpa library baru,
+  mati di `prefers-reduced-motion`. Spesifikasi lengkap: **`DESIGN.md` §6d**.
+- Berkas: `src/components/fx/NavyFlood.tsx` (baru, dipasang di `layout.tsx`), token `@property --blend`
+  + kelas `flood`/`flood-exit` di `globals.css`; `body` & gradien penyambung §6c kini memakai `--blend`
+  supaya satu animasi bersama (tidak ada pita terang di tepi navy).
+- Status: `npm run build` bersih (15 Nov 2026) — **menunggu cek pemilik di browser**.
+
 ## ⚠️ Catatan serah-terima (agent sebelumnya kehabisan token di tengah Fase 7)
 1. Dokumen berubah dari v2 → **v2.2**: section About/Keahlian/Proyek/Pengalaman/Kontak/Footer kini meniru referensi lengkap
    (bento, panel navy, kartu bernomor). Implementasi v2 (baris hairline, kartu CTA biru tunggal) **harus ditulis ulang**.

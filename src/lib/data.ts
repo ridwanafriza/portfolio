@@ -21,7 +21,7 @@ export const profile = {
 
 /** Link Click-to-Chat WhatsApp resmi (ketentuan tugas butir 4). */
 export const waLink = `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(
-  "Halo Ridwan, saya melihat portofolio kamu dan ingin berdiskusi.",
+  "Halo Ridwan, saya tertarik untuk bekerja sama. Boleh diskusi?",
 )}`;
 
 /**

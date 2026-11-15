@@ -370,6 +370,31 @@ campuran ≥74% navy → kontras AA tetap terpenuhi. Bawah Keahlian 100px — pa
 
 ---
 
+### 6d. Navy Flood — latar meluap ke navy (amandemen pemilik 15 Nov 2026)
+
+Efek satu arah: saat scroll **ke bawah** menembus garis **55% viewport** pada section navy
+(`#skills` / `#contact`), latar halaman seluruhnya bertransisi ke navy **sekali**; scroll ke bawah
+melewati section → kembali ke latar terang; scroll **ke atas** melewati ambang → kembali
+**langsung tanpa animasi**. Tidak ada library baru.
+
+| Aspek | Spesifikasi |
+|---|---|
+| Berkas | `fx/NavyFlood.tsx` (dipasang di `layout.tsx`), aturan di `globals.css` |
+| Mekanisme | Token `@property --blend` (warna bertransisi) + kelas `<html>`: `flood` / `flood-exit` |
+| Masuk (scroll ke bawah) | `html.flood` → `--blend: var(--navy)`, **500ms** |
+| Keluar (scroll ke bawah) | `html.flood-exit` → `--blend: var(--bg)`, **250ms**, kelas dilepas setelah transisi |
+| Keluar (scroll ke atas) | kelas dilepas tanpa transisi → **0ms (instan)** |
+| Cakupan | Hanya `#skills` & `#contact`; pemicu = section **membentang di garis 55%** |
+| Selaras dengan §6c | `body` dan semua gradien penyambung (`.section-navy`, `.section-navy-top`, `.section-alt`) memakai `var(--blend)` → satu animasi bersama, tidak ada pita terang di tepi navy |
+| Reduced-motion | `NavyFlood.tsx` keluar lebih awal — tidak ada kelas sama sekali; guard CSS juga `transition: none` |
+| Tanpa `@property` | Nilai `--blend` tetap benar tapi lompat (tanpa fade) — graceful degradation |
+
+Catatan kontras (dipahami & diterima pemilik): saat luapan, section terang di atas garis (Tentang/
+Proyek) ikut menjadi navy — kartu putih tetap opaque, judul section berada di posisi atas yang sudah
+keluar layar pada momen pemicu.
+
+---
+
 ## 7. Foto Profil
 Cutout transparan (PNG/WebP), setengah badan, pakaian rapi, ekspresi ramah, pencahayaan merata, ≥ 1200×1500.
 Dipakai di **Hero** (arch + fade bawah) dan **About** (kartu foto, terpotong dasar). Hapus latar via remove.bg/Photoroom.
@@ -386,6 +411,7 @@ Jangan pakai foto stok berlatar gelap.
 | Kartu | `translateY(-4px)` | 200ms |
 | Pill hero / pill kaca | float ±6px opsional | 6s |
 | **Ganti tema** | crossfade seluruh halaman (§9.1) | 400ms `cubic-bezier(.4,0,.2,1)` |
+| **Navy Flood** (§6d) | latar halaman meluap ke navy sekali | masuk 500ms · keluar-bawah 250ms · keluar-atas instan |
 | Ikon toggle tema | Sun↔Moon: rotate 90° + fade | 250ms |
 
 `prefers-reduced-motion: reduce` → matikan semua kecuali perubahan warna (termasuk empat fitur di bawah).
