@@ -12,14 +12,28 @@
 4. **Pendekatan ATM** (`AGENTS.md` §2b): pola ditiru, aset/teks/kode wajib asli; tulis kredit inspirasi di `README.md`.
 
 ## 🆕 Tambahan v2.4 (15 Nov 2026) — Navy Flood
-- Efek scroll satu arah: saat scroll **ke bawah** menembus garis 55% viewport pada `#skills`/`#contact`,
-  latar halaman meluap ke navy sekali (masuk **500ms**); keluar saat scroll ke bawah melewati section
-  (**250ms**); scroll **ke atas** melewati ambang → **langsung tanpa animasi**. Tanpa library baru,
+- Efek scroll satu arah: saat scroll **ke bawah** menembus garis 55% viewport pada `#skills`,
+  latar halaman meluap ke navy sekali; masuk & keluar — termasuk **ke atas** — **700ms**
+  `cubic-bezier(.44,0,.56,1)` dua arah identik. Tanpa library baru,
   mati di `prefers-reduced-motion`. Spesifikasi lengkap: **`DESIGN.md` §6d**.
-- Berkas: `src/components/fx/NavyFlood.tsx` (baru, dipasang di `layout.tsx`), token `@property --blend`
+- **Revisi 16 Nov 2026:**
+  1. **Footer dikembalikan ke tampilan awal** — `#contact` dikeluarkan dari pemicu flood
+     (pemilik: "di footer birunya sampe ketinggian"; saat flood body ikut navy → section
+     transparan di atas footer ikut biru). Kini body tetap `--bg` di footer; transisi lewat
+     gradien atas `.section-navy-top` (2 tahap 240px).
+  2. **Tepi gradien diratakan atas–bawah** — bawah `.section-navy` jadi cermin atas (2 tahap,
+     240px); `.section-alt` juga dicerminkan (130px). Tidak ada tepi yang terasa kepotong.
+  3. Keluar-atas kini bertransisi (`floodOff()` bersama, `EXIT_MS = 750`).
+  4. **Timing disamakan dengan referensi** (`portfon.framer.website`) — pemilik: "contoh
+     animasi transisi ke navy nya kek gini". Ditelusuri ke kode Framer-nya: komponen
+     **`Bg Linear`** (layer navy `blur(110px)`, fade `opacity 0→1` saat 50% masuk viewport,
+     `animateOnce:false`) memakai tween **`duration .7s`, `ease [.44,0,.56,1]`** dua arah.
+     Flood kita kini **700ms `cubic-bezier(.44,0,.56,1)`** masuk+keluar (dari 650/400ms
+     `cubic-bezier(.4,0,.2,1)`); `EXIT_MS` 450 → **750**. Pola timing ditiru, bukan layer blur.
+- Berkas: `src/components/fx/NavyFlood.tsx` (dipasang di `layout.tsx`), token `@property --blend`
   + kelas `flood`/`flood-exit` di `globals.css`; `body` & gradien penyambung §6c kini memakai `--blend`
   supaya satu animasi bersama (tidak ada pita terang di tepi navy).
-- Status: `npm run build` bersih (15 Nov 2026) — **menunggu cek pemilik di browser**.
+- Status: `npm run build` bersih (16 Nov 2026) — **menunggu cek pemilik di browser**.
 
 ## ⚠️ Catatan serah-terima (agent sebelumnya kehabisan token di tengah Fase 7)
 1. Dokumen berubah dari v2 → **v2.2**: section About/Keahlian/Proyek/Pengalaman/Kontak/Footer kini meniru referensi lengkap

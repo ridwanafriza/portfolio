@@ -359,32 +359,37 @@ di `globals.css` (§ Utility), dipakai sebagai `background-image` sehingga selal
 | Section | Kelas | Sambung |
 |---|---|---|
 | Tentang | `.blend-from-hero` | atas: `--hero-bg` → transparan (130px) |
-| Keahlian | `.section-navy` | atas: `--bg` → navy (130px); bawah: navy → `--bg` (100px) |
-| Pengalaman | `.section-alt` (+ `bg-bg-alt`) | atas: `--bg` → `--bg-alt`; bawah: `--bg-alt` → `--bg` |
-| Kontak | `.section-navy-top` | atas: `--bg` → navy (130px); section terakhir |
+| Keahlian | `.section-navy` | atas & bawah: **cermin** — 2 tahap `--blend` penuh → 26% di 96px → transparan 240px (revisi 16 Nov: atas-bawah merata, tidak kepotong) |
+| Pengalaman | `.section-alt` (+ `bg-bg-alt`) | atas & bawah cermin: `--blend` → transparan 130px (revisi 16 Nov) |
+| Kontak | `.section-navy-top` | atas: 2 tahap — sama seperti Keahlian (revisi 15 Nov); section terakhir |
 | Proyek / Sertifikasi | — | tidak perlu: ujung section sebelumnya sudah berakhir di `--bg` |
 
-Batas atas navy 130px — berakhir sebelum isi section (padding 96/112px), label putih masih di atas
-campuran ≥74% navy → kontras AA tetap terpenuhi. Bawah Keahlian 100px — pas di bawah panel kaca
-(padding 96/112px), tidak menembus panel.
+Tepi atas navy (revisi 15 Nov 2026): **ramp cepat** sampai campuran ≥74% navy di 96px — persis posisi
+label, kontras AA tetap terpenuhi — lalu **ekor memudar** pelan sampai 240px agar batas terasa panjang
+& lembut seperti referensi (bukan berhenti mendadak di 130px). **Revisi 16 Nov:** bawah Keahlian
+dibuat **cermin tepi atas** (2 tahap, 240px) supaya atas & bawah merata — tidak terasa kepotong;
+bagian pekat hanya 96px terbawah (di bawah panel kaca), ekor 26% tertutup panel. `.section-alt`
+(Pengalaman) juga dicerminkan (130px).
 
 ---
 
 ### 6d. Navy Flood — latar meluap ke navy (amandemen pemilik 15 Nov 2026)
 
 Efek satu arah: saat scroll **ke bawah** menembus garis **55% viewport** pada section navy
-(`#skills` / `#contact`), latar halaman seluruhnya bertransisi ke navy **sekali**; scroll ke bawah
+(`#skills` saja — lihat Cakupan), latar halaman seluruhnya bertransisi ke navy **sekali**; scroll ke bawah
 melewati section → kembali ke latar terang; scroll **ke atas** melewati ambang → kembali
-**langsung tanpa animasi**. Tidak ada library baru.
+dengan **transisi 700ms** (revisi 16 Nov: sebelumnya instan — pemilik: "kalau ga ada transisinya
+jadi jelek, kaku"). Tidak ada library baru.
 
 | Aspek | Spesifikasi |
 |---|---|
 | Berkas | `fx/NavyFlood.tsx` (dipasang di `layout.tsx`), aturan di `globals.css` |
 | Mekanisme | Token `@property --blend` (warna bertransisi) + kelas `<html>`: `flood` / `flood-exit` |
-| Masuk (scroll ke bawah) | `html.flood` → `--blend: var(--navy)`, **500ms** |
-| Keluar (scroll ke bawah) | `html.flood-exit` → `--blend: var(--bg)`, **250ms**, kelas dilepas setelah transisi |
-| Keluar (scroll ke atas) | kelas dilepas tanpa transisi → **0ms (instan)** |
-| Cakupan | Hanya `#skills` & `#contact`; pemicu = section **membentang di garis 55%** |
+| Masuk (scroll ke bawah) | `html.flood` → `--blend: var(--navy)`, **700ms** `cubic-bezier(.44,0,.56,1)` |
+| Keluar (scroll ke bawah) | `html.flood-exit` → `--blend: var(--bg)`, **700ms** easing sama (dua arah identik), kelas dilepas setelah `EXIT_MS = 750ms` |
+| Keluar (scroll ke atas) | `html.flood-exit` juga — **700ms** (revisi 16 Nov: dulu instan/0ms), kelas dilepas setelah `EXIT_MS = 750ms` |
+| Durasi/easing = referensi | Disamakan dengan transisi situs Portfon (16 Nov: "contoh animasi transisi ke navy nya kek gini"): komponen **`Bg Linear`** — layer navy ber-`blur(110px)` yang fade `opacity 0→1` saat masuk viewport, tween **`duration .7s`, `ease [.44,0,.56,1]`**, `animateOnce:false` (balik = transisi sama). Kita meniru **pola timing-nya** pada crossfade `--blend`, bukan layer blur |
+| Cakupan | **Hanya `#skills`**; pemicu = section **membentang di garis 55%**. `#contact` **dikeluarkan 16 Nov** — pemilik: "di footer birunya sampe ketinggian"; saat flood body ikut navy sehingga section transparan di atas footer ikut biru. Footer kembali ke tampilan awal: body tetap `--bg`, hanya section footer navy + gradien atas 240px (transisi lewat gradien §6c, tanpa kelas flood) |
 | Selaras dengan §6c | `body` dan semua gradien penyambung (`.section-navy`, `.section-navy-top`, `.section-alt`) memakai `var(--blend)` → satu animasi bersama, tidak ada pita terang di tepi navy |
 | Reduced-motion | `NavyFlood.tsx` keluar lebih awal — tidak ada kelas sama sekali; guard CSS juga `transition: none` |
 | Tanpa `@property` | Nilai `--blend` tetap benar tapi lompat (tanpa fade) — graceful degradation |
@@ -411,7 +416,7 @@ Jangan pakai foto stok berlatar gelap.
 | Kartu | `translateY(-4px)` | 200ms |
 | Pill hero / pill kaca | float ±6px opsional | 6s |
 | **Ganti tema** | crossfade seluruh halaman (§9.1) | 400ms `cubic-bezier(.4,0,.2,1)` |
-| **Navy Flood** (§6d) | latar halaman meluap ke navy sekali | masuk 500ms · keluar-bawah 250ms · keluar-atas instan |
+| **Navy Flood** (§6d) | latar halaman meluap ke navy sekali | masuk & keluar **700ms** `cubic-bezier(.44,0,.56,1)` (bawah & atas) — = transisi referensi Portfon |
 | Ikon toggle tema | Sun↔Moon: rotate 90° + fade | 250ms |
 
 `prefers-reduced-motion: reduce` → matikan semua kecuali perubahan warna (termasuk empat fitur di bawah).
